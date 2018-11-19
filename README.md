@@ -1,6 +1,6 @@
 # gdlint
 
-A linter for GDScript programming language. It enforces following the official style guid (http://docs.godotengine.org/en/3.0/getting_started/scripting/gdscript/gdscript_styleguide.html) + has some additional rules.
+A linter for GDScript programming language. It enforces following the official style guide (http://docs.godotengine.org/en/3.0/getting_started/scripting/gdscript/gdscript_styleguide.html) + has some additional rules.
 In active development. Use at your own risk!
 
 # Installation
