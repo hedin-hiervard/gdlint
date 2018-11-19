@@ -1,1 +1,1 @@
-export { engine } from 'engine'
+export { default as engine } from 'engine'
