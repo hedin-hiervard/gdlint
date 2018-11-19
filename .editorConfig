@@ -1,0 +1,24 @@
+# editorconfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = false
+
+[*.{js,jsx,json,less,scss,css}]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false
+
+# Matches the exact files either package.json or .travis.yml
+[{package.json,src/api-v1.json}]
+indent_style = space
+indent_size = 2

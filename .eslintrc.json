@@ -1,0 +1,41 @@
+{
+  "plugins": [
+    "standard",
+    "promise",
+    "jest",
+    "json",
+    "babel",
+    "flowtype"
+  ],
+  "parser": "babel-eslint",
+  "extends": [
+    "standard",
+    "plugin:flowtype/recommended"
+  ],
+  "env": {
+    "jest": "true"
+  },
+  "rules": {
+    "semi": [
+        "error",
+        "never"
+    ],
+    "no-extra-semi": 1,
+    "indent": [
+      "error",
+      4
+    ],
+    "space-before-function-paren": 0,
+    "keyword-spacing": 0,
+    "handle-callback-err": 0,
+    "no-useless-escape": 0,
+    "no-cond-assign": 0,
+    "no-control-regex": 0,
+    "camelcase": 0,
+    "no-console": 2,
+    "comma-dangle": [
+      "warn",
+      "always-multiline"
+    ]
+  }
+}
