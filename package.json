@@ -11,7 +11,8 @@
     "build": "babel src --out-dir dist",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
-    "commit": "git-cz"
+    "commit": "git-cz",
+    "prepublish": "yarn build"
   },
   "bin": {
     "gdlint": "node ./dist/cli/index.js"
