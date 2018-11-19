@@ -61,4 +61,9 @@ program
         process.exit(errorsCount === 0 ? 0 : 1)
     })
 
+if(process.argv.length < 3) {
+    program.help()
+    process.exit(0)
+}
+
 program.parse(process.argv)
