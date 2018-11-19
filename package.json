@@ -1,7 +1,7 @@
 {
   "name": "gdlint",
   "version": "0.0.0-development",
-  "main": "index.js",
+  "main": "dist/export.js",
   "license": "MIT",
   "scripts": {
     "lint": "eslint src && flow",
