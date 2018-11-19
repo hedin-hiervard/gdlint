@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // @flow
 import dotenv from 'dotenv'
 import Youch from 'youch'
