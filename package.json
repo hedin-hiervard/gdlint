@@ -4,7 +4,10 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "gdlint": "babel-node src/cli/index.js"
+    "lint": "eslint src && flow",
+    "test": "yarn lint",
+    "gdlint": "babel-node src/cli/index.js",
+    "precommit": "yarn test"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
@@ -27,5 +30,8 @@
     "ual": "^0.1.1",
     "youch": "^2.0.10",
     "youch-terminal": "^1.0.0"
+  },
+  "devDependencies": {
+    "husky": "^1.1.4"
   }
 }

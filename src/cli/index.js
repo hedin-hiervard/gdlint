@@ -36,6 +36,7 @@ program
 
         const results: MultipleLintingResults = {}
 
+        let errorsCount = 0
         for(const sourceFile of sourceFiles) {
             const source = fs.readFileSync(sourceFile, 'utf-8')
             let foundAST = false
@@ -46,6 +47,8 @@ program
                     foundAST = true
                     const ast = JSON.parse(fs.readFileSync(astFile, 'utf-8'))
                     results[sourceFile] = await engine.lint(source, ast)
+                    errorsCount += results[sourceFile]
+                        .reduce((acc, issue) => acc + (issue.type === 'error' ? 1 : 0), 0)
                     break
                 }
             }
@@ -54,7 +57,8 @@ program
             }
         }
 
-        console.log(format(results))
+        console.log(format(results)) // eslint-disable-line no-console
+        process.exit(errorsCount === 0 ? 0 : 1)
     })
 
 program.parse(process.argv)

@@ -87,8 +87,8 @@ export default class Engine {
                 subnodes.push(variable.expression)
                 subnodes.push(variable.initial_assignment)
             }
-            for(const c_name in node.constant_expressions) {
-                subnodes.push(node.constant_expressions[c_name].expression)
+            for(const c of node.constant_expressions) {
+                subnodes.push(c.value.expression)
             }
             break
         case 'function':

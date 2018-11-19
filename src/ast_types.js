@@ -282,9 +282,10 @@ type ClassNode = NodeBase & {
     extends_file: string,
     extends_class: string,
     base_type: DataType,
-    constant_expressions: {
-        [string]: ClassConstant
-    },
+    constant_expressions: Array<{
+        key: string,
+        value: ClassConstant,
+    }>,
     functions: Array<FunctionNode>, // eslint-disable-line no-use-before-define
     static_functions: Array<FunctionNode>, // eslint-disable-line no-use-before-define
     _signals: Array<ClassSignal>,
