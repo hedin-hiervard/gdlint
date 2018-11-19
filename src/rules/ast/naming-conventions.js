@@ -1,6 +1,6 @@
 // @flow
 
-import type { EmitIssue } from 'Engine'
+import type { EmitIssue } from 'engine'
 import type { Node } from 'ast_types'
 
 const pascalCase = /^[A-Z][a-z]+(?:[A-Z][a-z]+)*$/

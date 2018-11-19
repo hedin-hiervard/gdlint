@@ -1,6 +1,6 @@
 // @flow
 
-import type { EmitIssue } from 'Engine'
+import type { EmitIssue } from 'engine'
 import type { Node } from 'ast_types.js'
 
 function firstNonemptyLine(node: Node) {
