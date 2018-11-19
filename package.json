@@ -15,7 +15,7 @@
     "prepublish": "yarn build"
   },
   "bin": {
-    "gdlint": "node ./dist/cli/index.js"
+    "gdlint": "./dist/cli/index.js"
   },
   "dependencies": {
     "babel-cli": "^6.26.0",
