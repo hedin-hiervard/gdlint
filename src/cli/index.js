@@ -54,7 +54,8 @@ program
                 }
             }
             if(!foundAST) {
-                log.error(`couldn't find AST file`)
+                log.error(`couldn't find AST file for ${sourceFile}`)
+                process.exit(1)
             }
         }
 
