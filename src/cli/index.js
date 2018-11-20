@@ -47,6 +47,8 @@ program
             const source = fs.readFileSync(sourceFile, 'utf-8')
             let foundAST = false
             const { base } = path.parse(sourceFile)
+            log.debug(astFilesGlob)
+            log.debug(astFiles)
             for(const astFile of astFiles) {
                 const astName = path.parse(astFile).name
                 if(astName === base) {
