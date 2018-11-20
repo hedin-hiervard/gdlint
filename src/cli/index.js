@@ -36,10 +36,11 @@ program
         const results: MultipleLintingResults = {}
 
         engine.loadConfig(sourceFilesGlob)
-        const ignoreManager = new IgnoreManager(sourceFilesGlob)
 
         let errorsCount = 0
         for(const sourceFile of sourceFiles) {
+            const ignoreManager = new IgnoreManager(sourceFile)
+
             if(ignoreManager.isIgnored(sourceFile)) {
                 continue
             }
