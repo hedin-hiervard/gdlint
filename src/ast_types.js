@@ -254,6 +254,8 @@ export type ClassMember = {
 export type ClassConstant = {
     data_type: DataType, // eslint-disable-line no-use-before-define
     expression: Node, // eslint-disable-line no-use-before-define
+    is_enum: boolean,
+    line: number,
 };
 
 export type ClassSignal = {

@@ -23,7 +23,8 @@ export function apply(node: Node, emitIssue: EmitIssue) {
             })
         }
 
-        for(const { key: name, value: { expression: subnode } } of classNode.constant_expressions) {
+        for(const { key: name, value: constant } of classNode.constant_expressions) {
+            const { expression: subnode } = constant
             if(subnode.type !== 'constant') {
                 log.warn(`class constant type is not ConstantNode at ${subnode.line}:${subnode.col}`)
                 continue
@@ -49,13 +50,30 @@ export function apply(node: Node, emitIssue: EmitIssue) {
                         msg: 'preloaded script names must match PascalCase',
                     })
                 }
-            } else if(subnode.value.type === 'DICTIONARY') {
+            } else if(constant.is_enum) {
                 if(!name.match(pascalCase)) {
                     emitIssue({
-                        col: subnode.col,
-                        line: subnode.line,
-                        msg: 'const dictionaries (incl. enums) names must match PascalCase',
+                        col: 1,
+                        line: constant.line,
+                        msg: 'enum names must match PascalCase',
                     })
+                }
+                if(subnode.value.type !== 'DICTIONARY') {
+                    log.warn(`enum subnode type != DICTIONARY at ${constant.line}`)
+                } else {
+                    for(const elem of subnode.value.value) {
+                        if(elem.key.type !== 'STRING') {
+                            log.warn(`enum subnode element type != STRING at ${constant.line}`)
+                        } else {
+                            if(!elem.key.value.match(constantCase)) {
+                                emitIssue({
+                                    col: 1,
+                                    line: subnode.line,
+                                    msg: 'enum element names must match CONSTANT_CASE',
+                                })
+                            }
+                        }
+                    }
                 }
             } else {
                 if(!name.match(constantCase)) {
