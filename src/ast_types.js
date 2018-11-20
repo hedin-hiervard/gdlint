@@ -238,24 +238,25 @@ type PropertyInfo = {
     usage: number,
 };
 
-type ClassMember = {
+export type ClassMember = {
     _export: PropertyInfo,
     default_value: Node,
     identifier: string,
     data_type: DataType, // eslint-disable-line no-use-before-define
     getter: string,
     setter: string,
+    line: number,
     expression: Node,
     initial_assignment: OperatorNode, // eslint-disable-line no-use-before-define
     rpc_mode: RPCMode,
 };
 
-type ClassConstant = {
+export type ClassConstant = {
     data_type: DataType, // eslint-disable-line no-use-before-define
     expression: Node, // eslint-disable-line no-use-before-define
 };
 
-type ClassSignal = {
+export type ClassSignal = {
     name: string,
     arguments: Array<string>,
     emissions: number,
@@ -272,7 +273,7 @@ export type DataType = {
     native_type: boolean,
 };
 
-type ClassNode = NodeBase & {
+export type ClassNode = NodeBase & {
     type: 'class',
     name: string,
     subclasses: Array<ClassNode>,
