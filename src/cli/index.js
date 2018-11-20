@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 // @flow
-import dotenv from 'dotenv'
 import Youch from 'youch'
 import forTerminal from 'youch-terminal'
 import log from 'log.js'
@@ -8,6 +7,7 @@ import program from 'commander'
 import fs from 'fs-extra'
 import glob from 'glob-promise'
 import path from 'path'
+import IgnoreManager from 'ignore_manager'
 
 import Engine from 'engine'
 import format from 'formatters/colored-console'
@@ -26,8 +26,6 @@ process.on('uncaughtException', err => {
         })
 })
 
-dotenv.config()
-
 program
     .arguments('<source-file[s]> <ast-file[s]>')
     .action(async(sourceFilesGlob: string, astFilesGlob: string) => {
@@ -38,9 +36,13 @@ program
         const results: MultipleLintingResults = {}
 
         engine.loadConfig(sourceFilesGlob)
+        const ignoreManager = new IgnoreManager(sourceFilesGlob)
 
         let errorsCount = 0
         for(const sourceFile of sourceFiles) {
+            if(ignoreManager.isIgnored(sourceFile)) {
+                continue
+            }
             const source = fs.readFileSync(sourceFile, 'utf-8')
             let foundAST = false
             const { base } = path.parse(sourceFile)
