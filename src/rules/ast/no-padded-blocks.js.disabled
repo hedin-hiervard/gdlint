@@ -1,0 +1,46 @@
+// @flow
+
+import type { EmitIssue } from 'engine'
+import type { Node } from 'ast_types'
+
+import log from 'log.js'
+
+export function apply(node: Node, emitIssue: EmitIssue) {
+    if(node.type !== 'block') return
+
+    const blockNode = node
+
+    let firstNonEmptyLine = NaN
+    let lastNonEmptyLine = NaN
+
+    for(const st of blockNode.statements) {
+        if(st.type === 'newline') continue
+        if(isNaN(firstNonEmptyLine) || st.line < firstNonEmptyLine) {
+            firstNonEmptyLine = st.line
+        }
+        if(isNaN(lastNonEmptyLine) || st.line > lastNonEmptyLine) {
+            lastNonEmptyLine = st.line
+        }
+    }
+
+    if(firstNonEmptyLine > node.line + 1) {
+        log.debug('##')
+        log.debug(node.line)
+        log.debug(firstNonEmptyLine)
+        log.debug(node.end_line)
+        log.debug(lastNonEmptyLine)
+        emitIssue({
+            line: node.statements[0].line,
+            col: node.statements[0].col,
+            msg: 'block must not start with newlines',
+        })
+    }
+
+    if(lastNonEmptyLine < node.end_line) {
+        emitIssue({
+            line: node.statements[node.statements.length - 1].line,
+            col: node.statements[node.statements.length - 1].col,
+            msg: 'block must not end with newlines',
+        })
+    }
+}
