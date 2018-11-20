@@ -262,13 +262,13 @@ type ClassSignal = {
     line: number,
 };
 
-type DataType = {
+export type DataType = {
     has_type: boolean,
     is_constant: boolean,
     is_meta_type: boolean,
     infer_type: boolean,
     may_yield: boolean,
-    builtin_type: boolean,
+    builtin_type: VariantType,
     native_type: boolean,
 };
 
@@ -348,7 +348,225 @@ type LocalVarNode = NodeBase & {
     datatype: DataType,
 };
 
-type Variant = {};
+/* eslint-disable no-use-before-define */
+type Variant = VariantNil |
+    VariantBool |
+    VariantInt |
+    VariantReal |
+    VariantString |
+    VariantVector2 |
+    VariantRect2 |
+    VariantVector3 |
+    VariantTransform2D |
+    VariantPlane |
+    VariantQuat |
+    VariantAABB |
+    VariantBasis |
+    VariantTransform |
+    VariantColor |
+    VariantNodePath |
+    VariantRID |
+    VariantObject |
+    VariantDictionary |
+    VariantArray |
+    VariantPoolByteArray |
+    VariantPoolIntArray |
+    VariantPoolRealArray |
+    VariantPoolStringArray |
+    VariantPoolVector2Array |
+    VariantPoolVector3Array |
+    VariantPoolColorArray;
+/* eslint-enable no-use-before-define */
+
+type VariantNil = {
+    type: 'NIL',
+    value: 'NIL,'
+};
+
+type VariantBool = {
+    type: 'BOOL',
+    value: boolean,
+};
+
+type VariantInt = {
+    type: 'INT',
+    value: number,
+};
+
+type VariantReal = {
+    type: 'REAL',
+    value: number,
+};
+
+type VariantString = {
+    type: 'STRING',
+    value: string,
+};
+
+type Vector2 = {
+    x: number,
+    y: number,
+};
+
+type VariantVector2 = {
+    type: 'VECTOR2',
+    value: Vector2,
+};
+
+type VariantRect2 = {
+    type: 'RECT2',
+    value: {
+        origin: Vector2,
+        size: Vector2,
+    }
+};
+
+type Vector3 = {
+    x: number,
+    y: number,
+    z: number,
+};
+
+type VariantVector3 = {
+    type: 'VECTOR3',
+    value: Vector3,
+};
+
+type VariantTransform2D = {
+    type: 'TRANSFORM2D',
+    value: {
+        elements: [ Vector2, Vector2, Vector2 ],
+    },
+};
+
+type VariantPlane = {
+    type: 'PLANE',
+    value: {
+        normal: Vector3,
+        d: number,
+    },
+};
+
+type VariantQuat = {
+    type: 'QUAT',
+    value: {
+        x: number,
+        y: number,
+        z: number,
+        w: number,
+    },
+};
+
+type VariantAABB = {
+    type: 'AABB',
+    value: {
+        position: Vector2,
+        size: Vector2,
+    },
+};
+
+type Basis = {
+    tangent: Vector3,
+    bitangent: Vector3,
+    normal: Vector3,
+};
+
+type VariantBasis = {
+    type: 'BASIS',
+    value: Basis,
+};
+
+type VariantTransform = {
+    type: 'TRANSFORM',
+    value: {
+        basis: Basis,
+        origin: Vector3,
+    },
+};
+
+type Color = {
+    r: number,
+    g: number,
+    b: number,
+    a: number,
+};
+
+type VariantColor = {
+    type: 'COLOR',
+    value: Color,
+};
+
+type VariantNodePath = {
+    type: 'NODE_PATH',
+    value: {
+        names: Array<string>,
+        subnames: Array<string>,
+    },
+};
+
+type VariantRID = {
+    type: 'RID',
+    value: {
+        id: number,
+    },
+};
+
+type VariantObject = {
+    type: 'OBJECT',
+    value: {
+        class_name: string,
+    },
+};
+
+type VariantDictionary = {
+    type: 'DICTIONARY',
+    value: Array<{
+        key: Variant,
+        value: Variant,
+    }>,
+};
+
+type VariantArray = {
+    type: 'ARRAY',
+    value: Array<Variant>,
+};
+
+type PoolVector<T> = Array<T>;
+
+type VariantPoolByteArray = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<number>,
+};
+
+type VariantPoolIntArray = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<number>,
+};
+
+type VariantPoolRealArray = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<number>,
+};
+
+type VariantPoolStringArray = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<string>,
+};
+
+type VariantPoolVector2Array = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<Vector2>,
+};
+
+type VariantPoolVector3Array = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<Vector3>,
+};
+
+type VariantPoolColorArray = {
+    type: 'POOL_BYTE_ARRAY',
+    value: PoolVector<Color>,
+};
 
 type ConstantNode = NodeBase & {
     type: 'constant',

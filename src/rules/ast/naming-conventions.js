@@ -1,5 +1,7 @@
 // @flow
 
+import log from 'log.js'
+
 import type { EmitIssue } from 'engine'
 import type { Node } from 'ast_types'
 
@@ -11,6 +13,8 @@ const _snakeCase = /^_?([a-z]*_?[a-z]*)*$/
 
 export function apply(node: Node, emitIssue: EmitIssue) {
     if(node.type === 'class') {
+        const classNode = node
+
         if(!node.name.match(pascalCaseOrEmpty)) {
             emitIssue({
                 col: node.col,
@@ -18,16 +22,52 @@ export function apply(node: Node, emitIssue: EmitIssue) {
                 msg: 'class names must match PascalCase',
             })
         }
-        for(const { key: name, value: subnode } of node.constant_expressions) {
-            if(!name.match(constantCase) && !name.match(pascalCase)) {
-                emitIssue({
-                    col: subnode.expression.col,
-                    line: subnode.expression.line,
-                    msg: 'constant names must match CONSTANT_CASE or PascalCase',
-                })
+
+        for(const { key: name, value: { expression: subnode } } of classNode.constant_expressions) {
+            if(subnode.type !== 'constant') {
+                log.warn(`class constant type is not ConstantNode at ${subnode.line}:${subnode.col}`)
+                continue
+            }
+
+            if(subnode.value.type === 'OBJECT' &&
+                subnode.value.value.class_name === 'PackedScene'
+            ) {
+                if(!name.match(pascalCase)) {
+                    emitIssue({
+                        col: subnode.col,
+                        line: subnode.line,
+                        msg: 'preloaded packed scenes names must match PascalCase',
+                    })
+                }
+            } else if(subnode.value.type === 'OBJECT' &&
+                subnode.value.value.class_name === 'GDScript'
+            ) {
+                if(!name.match(pascalCase)) {
+                    emitIssue({
+                        col: subnode.col,
+                        line: subnode.line,
+                        msg: 'preloaded script names must match PascalCase',
+                    })
+                }
+            } else if(subnode.value.type === 'DICTIONARY') {
+                if(!name.match(pascalCase)) {
+                    emitIssue({
+                        col: subnode.col,
+                        line: subnode.line,
+                        msg: 'const dictionaries (incl. enums) names must match PascalCase',
+                    })
+                }
+            } else {
+                if(!name.match(constantCase)) {
+                    emitIssue({
+                        col: subnode.col,
+                        line: subnode.line,
+                        msg: 'constant names must match CONSTANT_CASE',
+                    })
+                }
             }
         }
-        for(const variable of node.variables) {
+        for(const variable of classNode.variables) {
             if(!variable.identifier.match(_snakeCase)) {
                 emitIssue({
                     col: variable.expression.col,
