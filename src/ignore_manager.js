@@ -21,7 +21,7 @@ export default class IgnoreManager {
 
                 for(const line of result) {
                     if(line.trim() === '') continue
-                    const pattern = path.join(ignoreFilePath, line, '**')
+                    const pattern = path.join(ignoreFilePath, line)
                     this.ignores.push(...glob.sync(pattern))
                 }
                 return
