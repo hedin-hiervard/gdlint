@@ -38,7 +38,6 @@ const entities = {
         .reduce(minLineReducer, NaN),
     subclasses: (cn: ClassNode) => cn.subclasses
         .reduce(minLineReducer, NaN),
-
     'static private funcs': (cn: ClassNode) => cn.static_functions
         .filter(v => v.name.startsWith('_') && v._static)
         .reduce(minLineReducer, NaN),

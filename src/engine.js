@@ -1,10 +1,18 @@
 // @flow
 import glob from 'glob-promise'
 import path from 'path'
+import log from 'log.js'
+import rcConfigLoader from 'rc-config-loader'
 
 import type { Node } from 'ast_types.js'
 
-type RuleIssueType = 'error' | 'warn';
+type RuleIssueType = 'error' | 'warn' | 'disabled';
+
+type Config = {
+    rules: {
+        [ string ]: RuleIssueType,
+    }
+};
 
 type LineIssue = {
     line: number,
@@ -28,19 +36,18 @@ export type EmitIssue = LineIssue => void;
 type ASTRule = {
     apply: (Node, EmitIssue) => void,
     name: string,
-    issueType: RuleIssueType,
 };
 
 type SourceRule = {
     apply: (string, EmitIssue) => void,
     name: string,
-    issueType: RuleIssueType,
 };
 
 export default class Engine {
     inited: boolean;
     astRules: Array<ASTRule>;
     sourceRules: Array<SourceRule>;
+    config: Config;
 
     constructor() {
         this.astRules = []
@@ -154,16 +161,78 @@ export default class Engine {
         subnodes.forEach(subnode => this.iterateAST(subnode, cb))
     }
 
+    defaultConfig(): Config {
+        const result = { rules: {} }
+        for(const rule of [
+            ...this.astRules,
+            ...this.sourceRules,
+        ]) {
+            result.rules[rule.name] = 'error'
+        }
+        return result
+    }
+
+    loadConfig(cwd: string) {
+        try {
+            const result = rcConfigLoader('gdlint', {
+                cwd,
+            })
+            if(!result) {
+                log.info(`no gdlint config found, using default`)
+                this.config = this.defaultConfig()
+            }
+            const { config, filePath } = result
+            log.info(`using config at: ${filePath}`)
+            this.config = config
+        } catch(err) {
+            log.error(`failed to load config: ${err.toString()}`)
+            log.info(`will use default config`)
+            this.config = this.defaultConfig()
+        }
+
+        for(const ruleName in this.config.rules) {
+            if(!this.astRules.find(rule => rule.name === ruleName) &&
+                !this.sourceRules.find(rule => rule.name === ruleName)) {
+                throw new Error(`no such rule: ${ruleName}`)
+            }
+            const possible = ['error', 'warn', 'disabled']
+            if(!possible.includes(this.config.rules[ruleName])) {
+                throw new Error(`rule ${ruleName}: invalid option ${this.config.rules[ruleName]}. Possible values: ${possible.join(', ')}`)
+            }
+        }
+        this.config.rules = this.config.rules || {}
+        for(const rule of [
+            ...this.astRules,
+            ...this.sourceRules,
+        ]) {
+            if(!this.config.rules[rule.name]) {
+                this.config.rules[rule.name] = 'error'
+            }
+        }
+    }
+
+    issueType(ruleName: string): RuleIssueType {
+        for(const rn in this.config.rules) {
+            if(ruleName === rn) {
+                return this.config.rules[rn]
+            }
+        }
+        throw new Error(`invalid rule: ${ruleName}`)
+    }
+
     async lint(source: string, ast: any): Promise<SingleLintingResult> {
         const issues: Array<LineIssueWithRule> = []
         for(const astRule of this.astRules) {
             this.iterateAST(ast,
                 node => astRule.apply(node, error => {
-                    issues.push({
-                        ...error,
-                        rule: astRule.name,
-                        type: astRule.issueType,
-                    })
+                    const type = this.issueType(astRule.name)
+                    if(type !== 'disabled') {
+                        issues.push({
+                            ...error,
+                            rule: astRule.name,
+                            type,
+                        })
+                    }
                 })
             )
         }

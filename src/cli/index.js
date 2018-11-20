@@ -37,6 +37,8 @@ program
 
         const results: MultipleLintingResults = {}
 
+        engine.loadConfig(sourceFilesGlob)
+
         let errorsCount = 0
         for(const sourceFile of sourceFiles) {
             const source = fs.readFileSync(sourceFile, 'utf-8')
