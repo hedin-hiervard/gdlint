@@ -5,11 +5,11 @@ import log from 'log.js'
 import type { EmitIssue } from 'engine'
 import type { Node } from 'ast_types'
 
-const pascalCase = /^[A-Z][a-z]+(?:[A-Z][a-z]+)*$/
-const pascalCaseOrEmpty = /^([A-Z][a-z]+(?:[A-Z][a-z]+)*)|$/
-const constantCase = /^([A-Z]*_?[A-Z]*)*$/
-const snakeCase = /^([a-z]*_?[a-z]*)*$/
-const _snakeCase = /^_?([a-z]*_?[a-z]*)*$/
+const pascalCase = /^[A-Z][a-z0-9_]+(?:[A-Z][a-z0-9_]+)*$/
+const pascalCaseOrEmpty = /^([A-Z][a-z0-9_]+(?:[A-Z][a-z0-9_]+)*)|$/
+const constantCase = /^([A-Z]*_?[A-Z0-9]*)*$/
+const snakeCase = /^([a-z]*_?[a-z0-9_]*)*$/
+const _snakeCase = /^_?([a-z]*_?[a-z0-9_]*)*$/
 
 export function apply(node: Node, emitIssue: EmitIssue) {
     if(node.type === 'class') {

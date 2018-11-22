@@ -1,6 +1,5 @@
 // @flow
 
-import log from 'log.js'
 import fs from 'fs'
 import path from 'path'
 import glob from 'glob-promise'
@@ -15,7 +14,6 @@ export default class IgnoreManager {
             const ignoreFilePath = dirs.join(path.sep)
             const ignoreFile = path.join(ignoreFilePath, '.gdlintignore')
             if(fs.existsSync(ignoreFile)) {
-                log.info(`using ignore file: ${ignoreFile}`)
                 const result = fs.readFileSync(ignoreFile, 'utf-8')
                     .split('\n')
 
@@ -28,7 +26,6 @@ export default class IgnoreManager {
             }
             dirs.pop()
         }
-        log.info(`didn't find .gdlintignore file`)
     }
 
     isIgnored(filepath: string): boolean {
