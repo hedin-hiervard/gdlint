@@ -89,9 +89,20 @@ export function apply(node: Node, emitIssue: EmitIssue) {
             firstLines[entName] = entities[entName](classNode, minLine)
             lastLines[entName] = entities[entName](classNode, maxLine)
         }
+        let entName
+
         for(let idx = 0; idx < Object.keys(entities).length - 1; idx++) {
-            const entName = Object.keys(entities)[idx]
-            const nextEntName = Object.keys(entities)[idx + 1]
+            if(!firstLines[Object.keys(entities)[idx]]) {
+                continue
+            }
+            if(!entName) {
+                entName = Object.keys(entities)[idx]
+                continue
+            }
+            const nextEntName = Object.keys(entities)[idx]
+            // log.debug(`${entName}: ${firstLines[entName]} - ${lastLines[entName]}`)
+            // log.debug(`vs`)
+            // log.debug(`${nextEntName}: ${firstLines[nextEntName]} - ${lastLines[nextEntName]}`)
             if(!isNaN(firstLines[nextEntName]) &&
                 !isNaN(lastLines[entName]) &&
                 lastLines[entName] > firstLines[nextEntName]
@@ -102,6 +113,7 @@ export function apply(node: Node, emitIssue: EmitIssue) {
                     msg: `${entName} should go before ${nextEntName}`,
                 })
             }
+            entName = nextEntName
         }
     }
 }
