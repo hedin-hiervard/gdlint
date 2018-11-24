@@ -24,6 +24,10 @@ function isExport(member: ClassMember): boolean {
     return member._export.type !== 'NIL'
 }
 
+function isOnready(member: ClassMember): boolean {
+    return member.onready
+}
+
 const entities = {
     signals: (cn: ClassNode, reducer: *) => cn._signals
         .reduce(reducer, NaN),
@@ -41,14 +45,23 @@ const entities = {
         .reduce(reducer, NaN),
     'exported vars': (cn: ClassNode, reducer: *) => cn.variables
         .filter(v => isExport(v))
+        .reduce(reducer, NaN),
+    'onready vars': (cn: ClassNode, reducer: *) => cn.variables
+        .filter(v => isOnready(v))
         .filter(v => !v.identifier.startsWith('_'))
+        .reduce(reducer, NaN),
+    'onready private vars': (cn: ClassNode, reducer: *) => cn.variables
+        .filter(v => isOnready(v))
+        .filter(v => v.identifier.startsWith('_'))
         .reduce(reducer, NaN),
     'vars': (cn: ClassNode, reducer: *) => cn.variables
         .filter(v => !isExport(v))
+        .filter(v => !isOnready(v))
         .filter(v => !v.identifier.startsWith('_'))
         .reduce(reducer, NaN),
     'private vars': (cn: ClassNode, reducer: *) => cn.variables
-        .filter(v => isExport(v))
+        .filter(v => !isExport(v))
+        .filter(v => !isOnready(v))
         .filter(v => v.identifier.startsWith('_'))
         .reduce(reducer, NaN),
     subclasses: (cn: ClassNode, reducer: *) => cn.subclasses

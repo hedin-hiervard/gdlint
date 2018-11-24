@@ -249,6 +249,7 @@ export type ClassMember = {
     expression: Node,
     initial_assignment: OperatorNode, // eslint-disable-line no-use-before-define
     rpc_mode: RPCMode,
+    onready: boolean,
 };
 
 export type ClassConstant = {
