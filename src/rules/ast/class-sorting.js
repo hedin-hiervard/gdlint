@@ -108,7 +108,7 @@ export function apply(node: Node, emitIssue: EmitIssue) {
                 lastLines[entName] > firstLines[nextEntName]
             ) {
                 emitIssue({
-                    line: firstLines[nextEntName],
+                    line: lastLines[entName],
                     col: 1,
                     msg: `${entName} should go before ${nextEntName}`,
                 })
