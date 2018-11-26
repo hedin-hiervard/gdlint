@@ -91,7 +91,7 @@ export function apply(node: Node, emitIssue: EmitIssue) {
         }
         let entName
 
-        for(let idx = 0; idx < Object.keys(entities).length - 1; idx++) {
+        for(let idx = 0; idx < Object.keys(entities).length; idx++) {
             if(!firstLines[Object.keys(entities)[idx]]) {
                 continue
             }
