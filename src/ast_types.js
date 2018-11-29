@@ -599,7 +599,7 @@ type SelfNode = NodeBase & {
 
 type OperatorNode = NodeBase & {
     type: 'operator',
-    op: Operator,
+    operator: Operator,
     arguments: Array<Node>,
     datatype: DataType,
 };
