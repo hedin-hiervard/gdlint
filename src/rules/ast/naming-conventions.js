@@ -7,9 +7,9 @@ import type { Node } from 'ast_types'
 
 const pascalCase = /^[A-Z][a-z0-9_]+(?:[A-Z][a-z0-9_]+)*$/
 const pascalCaseOrEmpty = /^([A-Z][a-z0-9_]+(?:[A-Z][a-z0-9_]+)*)|$/
-const constantCase = /^([A-Z]*_?[A-Z0-9]*)*$/
-const snakeCase = /^([a-z]*_?[a-z0-9_]*)*$/
-const _snakeCase = /^_?([a-z]*_?[a-z0-9_]*)*$/
+const constantCase = /^[A-Z]_?[A-Z0-9_]*$/
+const snakeCase = /^[a-z][a-z0-9_]*$/
+const _snakeCase = /^_?[a-z][a-z0-9_]*$/
 
 export function apply(node: Node, emitIssue: EmitIssue) {
     if(node.type === 'class') {
@@ -88,9 +88,9 @@ export function apply(node: Node, emitIssue: EmitIssue) {
         for(const variable of classNode.variables) {
             if(!variable.identifier.match(_snakeCase)) {
                 emitIssue({
-                    col: variable.expression.col,
-                    line: variable.expression.line,
-                    msg: 'variable names must match _?snake_case',
+                    col: 1,
+                    line: variable.line,
+                    msg: 'variable names must match _snake_case',
                 })
             }
         }
@@ -109,6 +109,14 @@ export function apply(node: Node, emitIssue: EmitIssue) {
                 col: node.col,
                 line: node.line,
                 msg: 'function names must match _?snake_case',
+            })
+        }
+    } else if(node.type === 'local var') {
+        if(!node.name.match(snakeCase)) {
+            emitIssue({
+                col: node.col,
+                line: node.line,
+                msg: 'local var names must match snake_case',
             })
         }
     }
