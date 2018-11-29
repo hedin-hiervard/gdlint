@@ -1,7 +1,5 @@
 // @flow
 
-import log from 'log.js'
-
 import type { EmitIssue } from 'engine'
 import type { Node } from 'ast_types'
 
@@ -13,8 +11,7 @@ export function apply(node: Node, emitIssue: EmitIssue) {
         const [ caller, method ] = node.arguments
         if(caller.type === 'self') return
         if(method.type !== 'identifier') return
-        if(!method.name.match(_snakeCase)) return
-
+        if(method.name.length <= 0 || !method.name.match(_snakeCase)) return
         if(node.operator === 'OP_CALL') {
             emitIssue({
                 line: method.line,
