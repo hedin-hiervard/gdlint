@@ -102,7 +102,12 @@ export default class Engine {
             subnodes = [ node.body ]
             break
         case 'block':
-            subnodes = [ ...node.statements ]
+            subnodes = [
+                ...node.statements,
+            ]
+            for(const vName in node.variables) {
+                subnodes.push(node.variables[vName])
+            }
             break
         case 'operator':
             subnodes = [ ...node.arguments ]
