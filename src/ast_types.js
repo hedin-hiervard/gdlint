@@ -250,6 +250,7 @@ export type ClassMember = {
     initial_assignment: OperatorNode, // eslint-disable-line no-use-before-define
     rpc_mode: RPCMode,
     onready: boolean,
+    usages: number,
 };
 
 export type ClassConstant = {
