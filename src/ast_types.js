@@ -314,7 +314,7 @@ type FunctionNode = NodeBase & {
     body: BlockNode, // eslint-disable-line no-use-before-define
 };
 
-type BlockNode = NodeBase & {
+export type BlockNode = NodeBase & {
     type: 'block',
     statements: Array<Node>,
     variables: {
