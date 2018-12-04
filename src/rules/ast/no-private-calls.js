@@ -8,6 +8,7 @@ const _snakeCase = /^_[a-z][a-z0-9_]*$/
 export function apply(node: Node, emitIssue: EmitIssue) {
     if(node.type === 'operator') {
         if(node.arguments.length < 2) return
+        if(node.arguments[0].type === 'built-in function') return
         const [ caller, method ] = node.arguments
         if(caller.type === 'self') return
         if(method.type !== 'identifier') return
