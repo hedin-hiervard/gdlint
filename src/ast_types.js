@@ -544,32 +544,32 @@ type VariantPoolByteArray = {
 };
 
 type VariantPoolIntArray = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_INT_ARRAY',
     value: PoolVector<number>,
 };
 
 type VariantPoolRealArray = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_REAL_ARRAY',
     value: PoolVector<number>,
 };
 
 type VariantPoolStringArray = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_STRING_ARRAY',
     value: PoolVector<string>,
 };
 
 type VariantPoolVector2Array = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_VECTOR2_ARRAY',
     value: PoolVector<Vector2>,
 };
 
 type VariantPoolVector3Array = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_VECTOR3_ARRAY',
     value: PoolVector<Vector3>,
 };
 
 type VariantPoolColorArray = {
-    type: 'POOL_BYTE_ARRAY',
+    type: 'POOL_COLOR_ARRAY',
     value: PoolVector<Color>,
 };
 
