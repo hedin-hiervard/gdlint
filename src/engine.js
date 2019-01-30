@@ -151,11 +151,19 @@ export default class Engine {
         case 'assert':
             subnodes = [ node.condition ]
             break
+        case 'array':
+            subnodes = node.elements
+            break
+        case 'dictionary':
+            subnodes = []
+            for(const elem of node.elements) {
+                subnodes.push(elem.key)
+                subnodes.push(elem.value)
+            }
+            break
         case 'identifier':
         case 'type':
         case 'constant':
-        case 'array':
-        case 'dictionary':
         case 'self':
         case 'breakpoint':
         case 'built-in function':
