@@ -1,16 +1,6 @@
 {
-  "presets": [ "env", "flow" ],
+  "presets": [ "@babel/preset-env", "@babel/preset-flow" ],
   "plugins": [
-  	  "transform-object-rest-spread",
-  	  "transform-runtime",
-	  ["module-resolver",
-				{
-					"root":
-						[
-						"./",
-						"./src",
-						]
-				}
-		  	]
+  	  "@babel/proposal-object-rest-spread",  	  	 
 	]
 }
