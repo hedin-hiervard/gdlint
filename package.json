@@ -1,6 +1,6 @@
 {
   "name": "gdlint",
-  "version": "0.0.0-development",
+  "version": "1.8.4",
   "main": "dist/export.js",
   "license": "MIT",
   "scripts": {
