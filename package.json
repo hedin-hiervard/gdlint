@@ -37,7 +37,7 @@
     "fs-extra": "^7.0.1",
     "glob-promise": "^3.4.0",
     "rc-config-loader": "^2.0.2",
-    "semantic-release": "^15.12.0",
+    "semantic-release": "^17.2.3",
     "travis-deploy-once": "^5.0.9",
     "ual": "^1.0.0",
     "youch": "^2.0.10",
@@ -47,7 +47,7 @@
     "commitizen": "^3.0.4",
     "cz-conventional-changelog": "^2.1.0",
     "husky": "^1.1.4",
-    "semantic-release": "^15.12.0",
+    "semantic-release": "^17.2.3",
     "travis-deploy-once": "^5.0.9"
   },
   "repository": {
